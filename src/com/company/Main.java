@@ -4,16 +4,16 @@ public class Main {
 
     public static void main(String args[]){
 
-        Hotel h1 = new Hotel();
+        HotelInterface h1 =  Hotel.getInstance();
 
         h1.addRoom(4, LuxuryCategory.Cheap);
-        h1.findRoom(0);
+        System.out.println(h1.findRoom(0).getBasePrice());
 
         System.out.println(h1);
 
-        Hotel h2 = new Hotel();
+        HotelInterface h2 = Hotel.getInstance();
 
-        System.out.println(h2);
+        System.out.println(h2.findRoom(0).getBasePrice());
 
     }
     
