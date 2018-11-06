@@ -8,15 +8,23 @@ public class Hotel implements HotelInterface {
     List<RoomInterface> Rooms = new ArrayList<>();
     int lastRoomId = 0;
 
+    static final HotelInterface hotel = new Hotel();
+
+
     Hotel() {
         //
         return;
+    }
+
+    public static HotelInterface getInstance() {
+        return hotel;
     }
 
     @Override
     public void addRoom(int nOfBeds, LuxuryCategory luxuryCategory) {
 
         RoomInterface isExistRoom = findRoom(lastRoomId);
+
         if (isExistRoom != null) {
             throw new IllegalArgumentException("Something is really fucked up, you are creating two rooms with same id: " + String.valueOf(lastRoomId));
 

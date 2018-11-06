@@ -38,16 +38,16 @@ public class Room implements RoomInterface {
 
         switch (luxuryCategory) {
             case Cheap:
-                this.price = 100;
+                this.price = 100 *  (float) this.numberOfBeds;
                 break;
             case Medium:
-                this.price = 150;
+                this.price = 150 *  (float) this.numberOfBeds;
                 break;
             case  Luxury:
-                this.price = 300;
+                this.price = 300 * (float) this.numberOfBeds;
                 break;
             case SuperLuxury:
-                this.price = 500;
+                this.price = 500 * (float) this.numberOfBeds;;
                 break;
 
             default:
