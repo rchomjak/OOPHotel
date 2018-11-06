@@ -62,7 +62,7 @@ public class Hotel implements HotelInterface {
         return;
     }
 
-    public void setAvailibityRoom(int id, Boolean availability) {
+    public void setAvailabilityRoom(int id, Boolean availability) {
 
         RoomInterface room =  findRoom(id);
 
