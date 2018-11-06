@@ -15,6 +15,8 @@ public interface RoomInterface {
     public void setIsOpen(Boolean isOpen);
 
 
+    public int getId();
+
 
 
 }

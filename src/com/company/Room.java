@@ -34,7 +34,7 @@ public class Room implements RoomInterface {
         this.luxuryCategory = luxuryCategory;
 
         //It can be rewritten into for loop and match with some linear equation based on ordinal number -> you have to
-        //keep ordinality sorted in this case. So in EVERY case your change in enum change this code!
+        //keep it sorted in this case. So in EVERY case your change in enum change this code!
 
         switch (luxuryCategory) {
             case Cheap:
@@ -69,7 +69,6 @@ public class Room implements RoomInterface {
         this.price = price;
     }
 
-
     @Override
     public Boolean getIsOpen() {
         return isOpen;
@@ -99,4 +98,10 @@ public class Room implements RoomInterface {
     public void setNumberOfBeds(int numberOfBeds) {
         this.numberOfBeds = numberOfBeds;
     }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
 }
