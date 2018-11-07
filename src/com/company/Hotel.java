@@ -5,10 +5,14 @@ import java.util.List;
 
 public class Hotel implements HotelInterface {
 
-    List<RoomInterface> Rooms = new ArrayList<>();
-    int lastRoomId = 0;
+    private List<RoomInterface> Rooms = new ArrayList<>();
+    private int lastRoomId = 0;
 
     static final HotelInterface hotel = new Hotel();
+    private int totalBedsCapacity = 0;
+
+    private List<ReservationInfoInterface> Reservations = new ArrayList<>();
+    private int lastReservationId = 0;
 
 
     Hotel() {
@@ -33,6 +37,8 @@ public class Hotel implements HotelInterface {
         RoomInterface newRoom = new Room(lastRoomId, nOfBeds, luxuryCategory);
 
         Rooms.add(newRoom);
+        totalBedsCapacity += nOfBeds;
+
         lastRoomId++;
 
         return;
@@ -48,11 +54,12 @@ public class Hotel implements HotelInterface {
     @Override
     public void deleteRoom(int id) {
 
-        RoomInterface delRoom =  findRoom(id);
+        RoomInterface delRoom = findRoom(id);
 
         if (delRoom != null && !delRoom.getIsDeleted()) {
 
             delRoom.setIsDeleted();
+            totalBedsCapacity -= delRoom.getNumberOfBeds();
 
         } else {
 
@@ -74,6 +81,21 @@ public class Hotel implements HotelInterface {
 
             throw new IllegalArgumentException("There is no room with id: " + String.valueOf(id));
         }
+    }
+
+    private int calculatesBedsCapacity() {
+        //If we will use "open/closed" parameters, we must rewrite this, otherwise is ok.
+
+        int bedsCapacity = 0;
+
+        for(RoomInterface room: Rooms) {
+            if (!room.getIsDeleted()) {
+                bedsCapacity += room.getNumberOfBeds();
+            }
+        }
+
+        this.totalBedsCapacity = bedsCapacity;
+        return totalBedsCapacity;
     }
 
 }

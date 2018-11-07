@@ -14,13 +14,9 @@ public interface RoomInterface {
     public Boolean getIsOpen();
     public void setIsOpen(Boolean isOpen);
 
-
     public int getId();
-
 
     public void setIsDeleted();
     public Boolean getIsDeleted();
-
-
 
 }
