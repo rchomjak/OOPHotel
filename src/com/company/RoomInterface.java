@@ -18,5 +18,9 @@ public interface RoomInterface {
     public int getId();
 
 
+    public void setIsDeleted();
+    public Boolean getIsDeleted();
+
+
 
 }

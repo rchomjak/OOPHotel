@@ -12,9 +12,12 @@ public class Main {
         System.out.println(h1);
 
         HotelInterface h2 = Hotel.getInstance();
-
         System.out.println(h2.findRoom(0).getBasePrice());
 
+
+        h2.deleteRoom(0);
+        //Should throw exception
+        h2.deleteRoom(21);
     }
     
 }

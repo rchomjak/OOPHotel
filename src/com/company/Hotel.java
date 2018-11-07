@@ -50,9 +50,9 @@ public class Hotel implements HotelInterface {
 
         RoomInterface delRoom =  findRoom(id);
 
-        if (delRoom != null) {
+        if (delRoom != null && !delRoom.getIsDeleted()) {
 
-            Rooms.remove(delRoom);
+            delRoom.setIsDeleted();
 
         } else {
 
