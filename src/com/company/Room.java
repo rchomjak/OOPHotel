@@ -17,6 +17,7 @@ public class Room implements RoomInterface {
     LuxuryCategory luxuryCategory;
     int numberOfBeds;
     Boolean isOpen;
+    Boolean isDeleted;
 
 
     Room(int id, int numberOfBeds,  LuxuryCategory luxuryCategory, float price) {
@@ -38,7 +39,7 @@ public class Room implements RoomInterface {
 
         switch (luxuryCategory) {
             case Cheap:
-                this.price = 100 *  (float) this.numberOfBeds;
+                this.price = 100 *  (float)this.numberOfBeds;
                 break;
             case Medium:
                 this.price = 150 *  (float) this.numberOfBeds;
@@ -104,4 +105,13 @@ public class Room implements RoomInterface {
         return id;
     }
 
+    @Override
+    public void setIsDeleted() {
+        this.isDeleted = true;
+    }
+
+    @Override
+    public Boolean getIsDeleted() {
+        return this.isDeleted;
+    }
 }
