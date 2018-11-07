@@ -9,7 +9,6 @@ enum LuxuryCategory {
     SuperLuxury
 }
 
-
 public class Room implements RoomInterface {
 
     int id;
@@ -26,6 +25,7 @@ public class Room implements RoomInterface {
         this.numberOfBeds = numberOfBeds;
         this.luxuryCategory = luxuryCategory;
         this.price = price;
+        this.isDeleted = false;
     }
 
     Room(int id, int numberOfBeds, LuxuryCategory luxuryCategory) {
@@ -33,31 +33,34 @@ public class Room implements RoomInterface {
         this.id = id;
         this.numberOfBeds = numberOfBeds;
         this.luxuryCategory = luxuryCategory;
+        this.isDeleted = false;
 
         //It can be rewritten into for loop and match with some linear equation based on ordinal number -> you have to
-        //keep it sorted in this case. So in EVERY case your change in enum change this code!
-
+        //keep it sorted in this case. So in EVERY case your change in enum, change this code!
         switch (luxuryCategory) {
+
             case Cheap:
-                this.price = 100 *  (float)this.numberOfBeds;
+                this.price = 100 * (float)this.numberOfBeds;
                 break;
+
             case Medium:
-                this.price = 150 *  (float) this.numberOfBeds;
+                this.price = 150 * (float)this.numberOfBeds;
                 break;
-            case  Luxury:
-                this.price = 300 * (float) this.numberOfBeds;
+
+            case Luxury:
+                this.price = 300 * (float)this.numberOfBeds;
                 break;
+
             case SuperLuxury:
-                this.price = 500 * (float) this.numberOfBeds;;
+                this.price = 500 * (float)this.numberOfBeds;
                 break;
 
             default:
-                System.err.println("Oh noes, The prices of room is incorrect, probably you had changed the enum LuxuryCategory");
+                System.err.println("Oh noes, The prices of room are incorrect, probably you had changed the enum LuxuryCategory.");
                 break;
         }
 
     }
-
 
     @Override
     public float getBasePrice() {
