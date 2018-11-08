@@ -3,29 +3,23 @@ package com.company;
 import java.util.Date;
 import java.util.List;
 
-enum OrderState {
-    New,
-    Accepted,
-    Canceled,
-}
+
 
 public class ReservationInfo implements  ReservationInfoInterface {
 
-    private int id;
     private Period period;
-    private OrderState orderStatus = OrderState.New;
 
+    private Client client;
     private List<RoomInterface> orderedRooms;
 
-    ReservationInfo(int id, Date startDate, Date endDate, List<RoomInterface> orderedRooms) {
-        this.id = id;
+    //TODO: Here we have should change List<RoomInterface> to List<roomID> or something like that
+    ReservationInfo(Date startDate, Date endDate, List<RoomInterface> orderedRooms) {
+
         this.period = new Period(startDate, endDate);
         this.orderedRooms = orderedRooms;
+
     }
 
-    public int getId() {
-        return this.id;
-    }
 
     public Period getPeriod() {
         return this.period;
@@ -36,9 +30,8 @@ public class ReservationInfo implements  ReservationInfoInterface {
         return orderedRooms;
     }
 
-    public void setOrderState(OrderState orderState) {
-        this.orderStatus = orderState;
 
-    }
+
+
 
 }
