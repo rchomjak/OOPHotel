@@ -4,6 +4,6 @@ import java.util.Date;
 
 public interface PeriodInterface {
 
-    void getStartDate();
-    void getStopDate();
+    Date getStartDate();
+    Date getStopDate();
 }

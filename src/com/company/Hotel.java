@@ -1,22 +1,22 @@
 package com.company;
 
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Hotel implements HotelInterface {
 
-    private List<RoomInterface> Rooms = new ArrayList<>();
+    private List<RoomInterface> rooms = new ArrayList<>();
     private int lastRoomId = 0;
 
     static final HotelInterface hotel = new Hotel();
     private int totalBedsCapacity = 0;
 
-    private List<ReservationInfoInterface> Reservations = new ArrayList<>();
+    private List<Reservation> reservations = new ArrayList<>();
     private int lastReservationId = 0;
 
+    private Hotel() {
 
-    Hotel() {
-        //
         return;
     }
 
@@ -30,13 +30,13 @@ public class Hotel implements HotelInterface {
         RoomInterface isExistRoom = findRoom(lastRoomId);
 
         if (isExistRoom != null) {
-            throw new IllegalArgumentException("Something is really fucked up, you are creating two rooms with same id: " + String.valueOf(lastRoomId));
+            throw new IllegalArgumentException("Something is really fucked up, you are creating two rooms with same id: " + lastRoomId);
 
         }
 
         RoomInterface newRoom = new Room(lastRoomId, nOfBeds, luxuryCategory);
 
-        Rooms.add(newRoom);
+        rooms.add(newRoom);
         totalBedsCapacity += nOfBeds;
 
         lastRoomId++;
@@ -47,7 +47,7 @@ public class Hotel implements HotelInterface {
     @Override
     public RoomInterface findRoom(int id) {
 
-        return Rooms.stream().filter(x->x.getId() == id).findAny().orElse(null);
+        return rooms.stream().filter(x->x.getId() == id).findAny().orElse(null);
     }
 
 
@@ -63,7 +63,7 @@ public class Hotel implements HotelInterface {
 
         } else {
 
-            throw new IllegalArgumentException("There is no room with id: " + String.valueOf(id));
+            throw new IllegalArgumentException("There is no room with id: " + id);
         }
 
         return;
@@ -74,21 +74,19 @@ public class Hotel implements HotelInterface {
         RoomInterface room =  findRoom(id);
 
         if (room != null) {
-
             room.setIsOpen(availability);
 
         } else {
-
-            throw new IllegalArgumentException("There is no room with id: " + String.valueOf(id));
+            throw new IllegalArgumentException("There is no room with id: " + id);
         }
     }
 
     private int calculatesBedsCapacity() {
-        //If we will use "open/closed" parameters, we must rewrite this, otherwise is ok.
+        //If we will use Availability parameters, we must rewrite this, otherwise is ok.
 
         int bedsCapacity = 0;
 
-        for(RoomInterface room: Rooms) {
+        for(RoomInterface room: rooms) {
             if (!room.getIsDeleted()) {
                 bedsCapacity += room.getNumberOfBeds();
             }
@@ -97,5 +95,28 @@ public class Hotel implements HotelInterface {
         this.totalBedsCapacity = bedsCapacity;
         return totalBedsCapacity;
     }
+/*
+    @Override
+    public List<ReservationInfo> findFreeRooms(Period period, List<Integer> rooms) {
+
+
+    }
+
+*/
+
+    @Override
+    public Boolean makeReservation(ClientInterface client, ReservationInfo request) {
+
+        /*
+        Reservation newReservation =  new Reservation(lastReservationId, client, request);
+        Reservations.add(newReservation);
+
+       // System.out.println(client.getId() + request.getId());
+        */
+
+        return true;
+
+    }
+
 
 }

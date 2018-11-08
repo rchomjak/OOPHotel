@@ -9,8 +9,13 @@ public class Client implements ClientInterface {
     //For discount purpose
     private int noFinishedReservations = 0;
 
-    Client(String id) {
+    private Boolean isDeleted = false;
+
+    private Boolean isSuperUser;
+
+    Client(String id, Boolean superUser) {
         this.id = id;
+        this.isSuperUser = superUser;
     }
 
     public int getNoFinishedReservations() {
@@ -24,6 +29,19 @@ public class Client implements ClientInterface {
     public String getId() {
         return id;
     }
+
+    public void setDeleted(){
+        this.isDeleted = true;
+    }
+
+    public Boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public Boolean isSuperUser() {
+        return this.isSuperUser;
+    }
+
 
 
 }

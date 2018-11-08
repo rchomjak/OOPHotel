@@ -17,6 +17,13 @@ public class Main {
         h2.deleteRoom(0);
         //Should throw exception
         h2.deleteRoom(0);
+
+
+        //   ReservationInfoInterface reservation = new ReservationInfo()
+
+
+
+
     }
     
 }

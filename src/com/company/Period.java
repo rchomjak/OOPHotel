@@ -13,12 +13,13 @@ public class Period implements PeriodInterface {
     }
 
     @Override
-    public void getStartDate() {
+    public Date getStartDate() {
+        return this.startDate;
 
     }
 
     @Override
-    public void getStopDate() {
-
+    public Date getStopDate() {
+        return this.startDate;
     }
 }
