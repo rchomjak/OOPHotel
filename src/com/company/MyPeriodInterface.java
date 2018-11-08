@@ -2,7 +2,7 @@ package com.company;
 
 import java.util.Date;
 
-public interface PeriodInterface {
+public interface MyPeriodInterface {
 
     Date getStartDate();
     Date getStopDate();

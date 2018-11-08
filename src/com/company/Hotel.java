@@ -12,7 +12,7 @@ public class Hotel implements HotelInterface {
     static final HotelInterface hotel = new Hotel();
     private int totalBedsCapacity = 0;
 
-    private List<Reservation> reservations = new ArrayList<>();
+    //private List<Reservation> reservations = new ArrayList<>();
     private int lastReservationId = 0;
 
     private Hotel() {

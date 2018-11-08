@@ -2,7 +2,7 @@ package com.company;
 
 import java.util.Date;
 
-public class Period implements PeriodInterface {
+public class Period implements MyPeriodInterface {
 
     Date startDate;
     Date stopDate;

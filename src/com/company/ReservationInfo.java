@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ReservationInfo implements  ReservationInfoInterface {
 
-    private Period period;
+    private MyPeriodInterface period;
 
     private Client client;
     private List<RoomInterface> orderedRooms;
@@ -21,7 +21,7 @@ public class ReservationInfo implements  ReservationInfoInterface {
     }
 
 
-    public Period getPeriod() {
+    public MyPeriodInterface getPeriod() {
         return this.period;
     }
 
