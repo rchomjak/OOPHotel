@@ -15,14 +15,10 @@ public class Main {
         System.out.println(h2.findRoom(0).getBasePrice());
 
         h2.deleteRoom(0);
-        //Should throw exception
+        // Should throw exception
         h2.deleteRoom(0);
 
-
-        //   ReservationInfoInterface reservation = new ReservationInfo()
-
-
-
+        // ReservationInfoInterface reservation = new ReservationInfo()
 
     }
     

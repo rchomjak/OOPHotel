@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface ReservationInfoInterface {
 
-    //public PeriodInterface getPeriod();
+    public MyPeriodInterface getPeriod();
     public List<RoomInterface> getRoomsInfo();
 
 }
