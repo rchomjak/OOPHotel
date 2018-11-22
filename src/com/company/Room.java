@@ -117,4 +117,30 @@ public class Room implements RoomInterface {
     public Boolean getIsDeleted() {
         return this.isDeleted;
     }
+
+    @Override
+    public boolean equals(Object a) {
+
+        if (a == null) {
+            return false;
+        }
+
+        if (a == this) {
+            return true;
+        }
+
+        if (!(a instanceof RoomInterface)) {
+            return false;
+        }
+
+        RoomInterface b = (RoomInterface)a;
+
+        if ((this.getNumberOfBeds() == b.getNumberOfBeds()) && (this.getLuxuryCategory() == b.getLuxuryCategory()) ) {
+            return true;
+        }
+
+        return false;
+
+    }
+
 }

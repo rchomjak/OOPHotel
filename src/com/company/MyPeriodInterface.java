@@ -1,9 +1,9 @@
 package com.company;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public interface MyPeriodInterface {
 
-    Date getStartDate();
-    Date getStopDate();
+    LocalDate getStartDate();
+    LocalDate getStopDate();
 }

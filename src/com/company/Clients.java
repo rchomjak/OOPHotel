@@ -3,18 +3,26 @@ package com.company;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Clients implements  ClientsInterface{
+public class Clients implements ClientsInterface{
 
-    List<Client> Clients = new ArrayList<>();
+    List<Client> clients = new ArrayList<>();
 
-    Clients() {
+
+    private static Clients client = new Clients();
+
+    private Clients() {
 
     }
+
+    public static Clients getInstance() {
+        return client;
+    }
+
 
     @Override
     public Client findClient(String id) {
 
-        return Clients.stream().filter(x->x.getId().equals(id)).findAny().orElse(null);
+        return clients.stream().filter(x->x.getId().equals(id)).findAny().orElse(null);
     }
 
     @Override
@@ -35,7 +43,7 @@ public class Clients implements  ClientsInterface{
     @Override
     public void addClient(Client in_client) {
 
-        for (Client client: Clients) {
+        for (Client client: clients) {
 
             if (client.getId().equals(in_client.getId())) {
                 throw new IllegalArgumentException("There is already exists client with same id: " + client.getId());
@@ -43,7 +51,7 @@ public class Clients implements  ClientsInterface{
 
         }
 
-        Clients.add(in_client);
+        clients.add(in_client);
 
     }
 }
