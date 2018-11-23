@@ -109,8 +109,8 @@ public class Room implements RoomInterface {
     }
 
     @Override
-    public void setIsDeleted() {
-        this.isDeleted = true;
+    public void setDeleted(boolean deleted) {
+        this.isDeleted = deleted;
     }
 
     @Override

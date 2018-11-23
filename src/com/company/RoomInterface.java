@@ -16,7 +16,7 @@ public interface RoomInterface {
 
     public int getId();
 
-    public void setIsDeleted();
+    public void setDeleted(boolean deleted);
     public Boolean getIsDeleted();
 
     public boolean equals(Object a);

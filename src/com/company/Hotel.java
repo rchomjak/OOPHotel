@@ -1,5 +1,19 @@
 package com.company;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVRecord;
+
+import java.io.*;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Period;
 import java.util.*;
 import java.util.function.Function;
@@ -18,7 +32,7 @@ public class Hotel implements HotelInterface {
 
     private final double CLIENT_DISCOUNT_LAST_RESERVATION_RATIO = 0.30;
 
-    private List<RoomInterface> rooms = new ArrayList<>();
+    List<RoomInterface> rooms = new ArrayList<>();
     private int lastRoomId = 0;
 
     private static final HotelInterface hotel = new Hotel();
@@ -61,6 +75,26 @@ public class Hotel implements HotelInterface {
         return;
 
     }
+
+    private void addRoomCSV(RoomInterface in_room) {
+
+
+        for (RoomInterface room: rooms) {
+
+            if (room.getId() == in_room.getId()) {
+                throw new IllegalArgumentException("You are adding same rooms twice Room id: " + in_room.getId());
+            }
+        }
+
+
+        this.rooms.add(in_room);
+
+        totalBedsCapacity += in_room.getNumberOfBeds();
+
+        lastRoomId = in_room.getId();
+        lastRoomId++;
+    }
+
     @Override
     public RoomInterface findRoom(int id) {
 
@@ -79,7 +113,7 @@ public class Hotel implements HotelInterface {
         RoomInterface delRoom = findRoom(id);
         if (delRoom != null && !delRoom.getIsDeleted()) {
 
-            delRoom.setIsDeleted();
+            delRoom.setDeleted(true);
             totalBedsCapacity -= delRoom.getNumberOfBeds();
 
         } else {
@@ -379,5 +413,57 @@ public class Hotel implements HotelInterface {
         return this.reservations;
     }
 
+
+    public void readRooms(String path) {
+
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get(path));
+
+            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
+
+            for (CSVRecord csvRecord : csvParser) {
+
+                RoomInterface addRoom = new Room(Integer.parseInt(csvRecord.get("id")),  Integer.parseInt(csvRecord.get("numberOfBeds")),  LuxuryCategory.valueOf( csvRecord.get("luxuryCategory")));
+
+                addRoom.setDeleted(Boolean.parseBoolean(csvRecord.get("numberOfBeds")));
+                this.addRoomCSV(addRoom);
+
+
+            }
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        } finally {
+
+
+        }
+
+
+    }
+
+    public void writeRooms(String path) {
+
+        try (
+                BufferedWriter writer = Files.newBufferedWriter(Paths.get(path));
+
+                CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+                        .withHeader("id", "numberOfBeds", "isDeleted", "luxuryCategory", "price"));
+        ) {
+
+
+            for (RoomInterface room: rooms) {
+                csvPrinter.printRecord(room.getId(), room.getNumberOfBeds(), room.getIsDeleted(), room.getLuxuryCategory(), room.getBasePrice());
+
+            }
+
+
+            csvPrinter.flush();
+        }  catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+    }
 
 }
