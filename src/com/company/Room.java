@@ -143,4 +143,10 @@ public class Room implements RoomInterface {
 
     }
 
+    @Override
+    public String toString() {
+
+        return "{\"Room_id\": "+ this.getId()  + ", \"Number_of_beds\": " + this.getNumberOfBeds() + ", \"Luxury_type\": " + "\"" +this.getLuxuryCategory().toString() + "\"" + ", \"Base_price\": " + this.getBasePrice() + "}";
+
+    }
 }

@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public class MyPeriod implements MyPeriodInterface {
 
-    LocalDate startDate;
-    LocalDate stopDate;
+    private LocalDate startDate;
+    private LocalDate stopDate;
 
     MyPeriod(LocalDate startDate, LocalDate stopDate) {
         this.startDate = startDate;
@@ -20,6 +20,6 @@ public class MyPeriod implements MyPeriodInterface {
 
     @Override
     public LocalDate getStopDate() {
-        return this.startDate;
+        return this.stopDate;
     }
 }

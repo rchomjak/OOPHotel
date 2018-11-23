@@ -18,6 +18,8 @@ public class Client implements ClientInterface {
         this.isSuperUser = superUser;
     }
 
+
+
     public int getNoFinishedReservations() {
         return noFinishedReservations;
     }
@@ -42,6 +44,36 @@ public class Client implements ClientInterface {
         return this.isSuperUser;
     }
 
+    @Override
+    public String toString() {
+        return "{" + "\"id\":" + "\"" + getId() + "\"" + ", \"Admin_rights\": " + this.isSuperUser + ", \"Finished_reservations\":" + this.getNoFinishedReservations() + "}";
+    }
+
+    @Override
+    public boolean equals(Object a) {
+
+        if (a == null) {
+            return false;
+        }
+
+        if (a == this) {
+            return true;
+        }
+
+        if (!(a instanceof ClientInterface)) {
+            return false;
+        }
+
+        Client b = (Client)a;
+
+        if ((this.getId() == b.getId())) {
+            return true;
+        }
+
+        return false;
+
+    }
 
 
 }
+
