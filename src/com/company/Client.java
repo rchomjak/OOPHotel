@@ -24,16 +24,21 @@ public class Client implements ClientInterface {
         return noFinishedReservations;
     }
 
+    public void setNoFinishedReservations(int noFinishedRes) {
+        this.noFinishedReservations = noFinishedRes;
+    }
+
     public void incrNoFinishedReservation() {
         this.noFinishedReservations += 1;
     }
+
 
     public String getId() {
         return id;
     }
 
-    public void setDeleted(){
-        this.isDeleted = true;
+    public void setDeleted(Boolean state){
+        this.isDeleted = state;
     }
 
     public Boolean isDeleted() {

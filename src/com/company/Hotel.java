@@ -12,8 +12,9 @@ public class Hotel implements HotelInterface {
     private final int MAX_NUMBER_BEDS = 4;
     private final int MIN_NUMBER_BEDS = 1;
 
-    private final int ROOMS_ROTATION = 25; //kind of magic (I just wrote 25) :-)
     private final int MAXIMUM_ROOMS_RESERVATION_INFO = 3;
+
+    private final int ROOMS_ROTATION = MAXIMUM_ROOMS_RESERVATION_INFO;
 
     private final double CLIENT_DISCOUNT_LAST_RESERVATION_RATIO = 0.30;
 
@@ -353,12 +354,12 @@ public class Hotel implements HotelInterface {
         float clientDiscountRatio = clientDiscountCount / (!discountReservations.isEmpty()? discountReservations.size(): Integer.MAX_VALUE);
 
         //Maximum is 0.69
-        double percentageDiscount = Math.log(clientDiscountRatio + 1);
+        double ratioDiscount = Math.log(clientDiscountRatio + 1);
 
         float price;
 
         if (clientDiscountRatio > 0.1) {
-            price = (float)request.getRoomsInfo().stream().mapToDouble(x -> x.getBasePrice()).sum() * (float) percentageDiscount;
+            price = (float)request.getRoomsInfo().stream().mapToDouble(x -> x.getBasePrice()).sum() * (float) ratioDiscount;
 
         } else {
 
@@ -366,10 +367,8 @@ public class Hotel implements HotelInterface {
         }
 
         price =  price * (-DAYS.between(request.getPeriod().getStopDate(), request.getPeriod().getStartDate()));
-        ReservationInterface reservation = new Reservation(lastReservationId++, client, request, price, (float) percentageDiscount);
+        ReservationInterface reservation = new Reservation(lastReservationId++, client, request, price, (float) ratioDiscount);
 
-
-      //  List<ReservationInterface> reserv = reservations.reservationsInMyPeriod(request.getPeriod());
 
         reservations.addReservation((Reservation) reservation);
 
