@@ -1,6 +1,7 @@
 package com.company;
 
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -11,11 +12,38 @@ import java.util.List;
 public class Main {
 
     public static void main(String args[]){
-
+    /*
         Hotel h1 =  (Hotel) Hotel.getInstance();
 
         h1.addRoom(4, LuxuryCategory.Cheap);
         h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(3, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+
+        h1.addRoom(2, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+
+
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(3, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+
+        h1.addRoom(2, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+
         h1.addRoom(4, LuxuryCategory.Cheap);
         h1.addRoom(3, LuxuryCategory.Cheap);
         h1.addRoom(4, LuxuryCategory.Cheap);
@@ -72,8 +100,6 @@ public class Main {
         request.add(1);
 
 
-
-
         ClientsInterface hotelClients = Clients.getInstance();
 
         Client testClient = new Client("a@a.sk", false);
@@ -100,8 +126,24 @@ public class Main {
 
      //   System.out.println(reservationsInfo2);
 
-        ReservationInfo res2 = reservationsInfo2.get(0);
-        h1.makeReservation(testClient, res2);
+        for(int i = 0; i < reservationsInfo.size(); i++ ) {
+
+            ReservationInfo res2 = reservationsInfo2.get(i);
+
+            h1.makeReservation(testClient, res2);
+        }
+
+
+        for(int i = 0; i < reservationsInfo2.size(); i++ ) {
+            h1.makeReservation(testClient, reservationsInfo2.get(i));
+        }
+
+
+
+
+        for(int i = 0; i < reservationsInfo2.size(); i++ ) {
+            h1.makeReservation(testClient, reservationsInfo2.get(i));
+        }
 
 
 
@@ -110,10 +152,32 @@ public class Main {
         System.out.println(b.getAllReservations());
 
 
-
+        h1.getReservations().deleteReservation(1);
 
         //ReservationInfoInterface reservation = new ReservationInfo()
 
+
+        */
+
+        Clients clients = Clients.getInstance();
+
+        Client client1 = new Client("A", false);
+
+        //clients.addClient(client1);
+
+        try {
+            clients.reader("clients.csv");
+        } catch (IOException a) {
+            a.printStackTrace();
+        }
+
+        System.out.println(clients.clients);
+
     }
+
+
+
+
+
 
 }

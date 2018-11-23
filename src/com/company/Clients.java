@@ -1,7 +1,19 @@
 package com.company;
 
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+import org.apache.commons.csv.CSVParser;
+
+import java.io.*;
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class Clients implements ClientsInterface{
 
@@ -10,9 +22,14 @@ public class Clients implements ClientsInterface{
 
     private static Clients client = new Clients();
 
+
+
     private Clients() {
 
     }
+
+
+
 
     public static Clients getInstance() {
         return client;
@@ -32,7 +49,7 @@ public class Clients implements ClientsInterface{
 
         if (client != null && !client.isDeleted()) {
 
-            client.setDeleted();
+            client.setDeleted(true);
 
         } else {
 
@@ -54,4 +71,63 @@ public class Clients implements ClientsInterface{
         clients.add(in_client);
 
     }
+
+    public Boolean writer(String path) throws IOException {
+
+        try (
+                BufferedWriter writer = Files.newBufferedWriter(Paths.get(path));
+
+                CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+                        .withHeader("id", "noFinishedReservations", "isDeleted", "isSuperUser"));
+        ) {
+
+
+            for (Client lClient: clients) {
+                csvPrinter.printRecord(lClient.getId(), lClient.getNoFinishedReservations(), lClient.isDeleted(), lClient.isDeleted());
+
+            }
+
+
+            csvPrinter.flush();
+        }  catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+
+        return true;
+    }
+
+    public void reader(String path)   throws IOException {
+
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get(path));
+
+            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
+
+            for (CSVRecord csvRecord : csvParser) {
+
+
+
+                Client addClient = new Client(csvRecord.get("id"), Boolean.parseBoolean(csvRecord.get("isSuperUser")));
+
+                addClient.setDeleted(Boolean.parseBoolean(csvRecord.get("isDeleted")));
+                addClient.setNoFinishedReservations(Integer.parseInt(csvRecord.get("noFinishedReservations")));
+
+                this.addClient(addClient);
+
+            }
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        } finally {
+
+
+        }
+
+
+    }
+
+
 }
