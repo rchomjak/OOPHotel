@@ -159,6 +159,7 @@ public class Main {
 
         */
 
+     /*
         Clients clients = Clients.getInstance();
 
         Client client1 = new Client("A", false);
@@ -173,6 +174,30 @@ public class Main {
 
         System.out.println(clients.clients);
 
+
+        */
+
+        Hotel h1 =  (Hotel) Hotel.getInstance();
+/*
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(3, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+
+        h1.addRoom(2, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+        h1.addRoom(4, LuxuryCategory.Cheap);
+
+*/
+        h1.readRooms("rooms.csv");
+
+        System.out.println(h1.rooms);
     }
 
 
