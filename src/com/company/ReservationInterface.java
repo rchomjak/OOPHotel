@@ -7,5 +7,6 @@ public interface ReservationInterface {
     OrderState getOrderState();
     Boolean isReservedForMyPeriod(MyPeriodInterface inMyPeriod);
     ReservationInfoInterface getReservationInfo();
+    Client getClient();
 
 }

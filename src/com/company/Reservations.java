@@ -46,4 +46,8 @@ public class Reservations implements ReservationsInterface {
         return reservations.stream().filter(x->x.isReservedForMyPeriod(inMyPeriod)).collect(Collectors.toList());
     }
 
+    public List<ReservationInterface> getAllReservations() {
+        return reservations;
+    }
+
 }

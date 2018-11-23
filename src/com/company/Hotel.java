@@ -5,14 +5,17 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static java.time.temporal.ChronoUnit.DAYS;
+
 public class Hotel implements HotelInterface {
 
     private final int MAX_NUMBER_BEDS = 4;
     private final int MIN_NUMBER_BEDS = 1;
 
     private final int ROOMS_ROTATION = 25; //kind of magic (I just wrote 25) :-)
-    private final int MAXIMUM_ROOMS_RESERVATION_INFO = 5;
+    private final int MAXIMUM_ROOMS_RESERVATION_INFO = 3;
 
+    private final double CLIENT_DISCOUNT_LAST_RESERVATION_RATIO = 0.30;
 
     private List<RoomInterface> rooms = new ArrayList<>();
     private int lastRoomId = 0;
@@ -20,9 +23,9 @@ public class Hotel implements HotelInterface {
     private static final HotelInterface hotel = new Hotel();
     private int totalBedsCapacity = 0;
 
-    private ReservationsInterface reservations = new Reservations();
+    private Reservations reservations = new Reservations();
+    private int lastReservationId = 0;
 
-    //TODO: make ReservationSInfo (for more reservations);
 
     private Hotel() {
         //TODO: CSV Initialization for Reservations, Rooms, ...
@@ -46,7 +49,6 @@ public class Hotel implements HotelInterface {
         if (nOfBeds > MAX_NUMBER_BEDS || nOfBeds < MIN_NUMBER_BEDS) {
             throw new IllegalArgumentException("You cannot create a room with that number of beds: " + nOfBeds);
         }
-
 
         RoomInterface newRoom = new Room(lastRoomId, nOfBeds, luxuryCategory);
 
@@ -113,21 +115,21 @@ public class Hotel implements HotelInterface {
         return totalBedsCapacity;
 
     }
+
+    //TODO: Needs testing and rewrite.
     @Override
     public List<ReservationInfo> findFreeRooms(MyPeriodInterface period, List<Integer> inRoomsNoBeds) {
 
-//        System.out.println(inRoomsNoBeds);
-
-        List<RoomInterface> idealRoomsCandidate;
-        List<RoomInterface> roomsCandidate;
-
         int incorrectRoomRequest = inRoomsNoBeds.stream().filter(x-> x < MIN_NUMBER_BEDS || x > MAX_NUMBER_BEDS).collect(Collectors.toList()).size();
+
+        if (incorrectRoomRequest != 0) {
+            throw new IllegalArgumentException("You cannot reserve room in different range than " + "(" + MIN_NUMBER_BEDS +", "+ MAX_NUMBER_BEDS +  ")");
+        }
 
         int usedRoomsBedsCapacity;
 
-        if (incorrectRoomRequest != 0) {
-            throw new IllegalArgumentException("You cannot have reserve room in different range then " + "(" + MIN_NUMBER_BEDS +", "+ MAX_NUMBER_BEDS +  ")");
-        }
+        List<RoomInterface> idealRoomsCandidate;
+        List<RoomInterface> roomsCandidate;
 
         List<ReservationInfo> returnedReservationInfo = new ArrayList<>();
         List<List<RoomInterface>> listOfRoomsCandidates = new ArrayList<>();
@@ -141,9 +143,23 @@ public class Hotel implements HotelInterface {
 
         usedRoomsBedsCapacity = usedRoomsList.stream().mapToInt(i->i.getNumberOfBeds()).sum();
 
-        allRoomsList.removeAll(usedRoomsList);
+        List<RoomInterface> sortedRooms = new ArrayList<>();
+        boolean matched = false;
 
-        List<RoomInterface> sortedRooms = allRoomsList.stream().collect(Collectors.toList());
+        //Remove all rooms with same ID - why java sucks?
+        for (RoomInterface allRoom: allRoomsList) {
+
+            matched = false;
+            for (RoomInterface usedRoom: usedRoomsList) {
+                if (usedRoom.getId() == allRoom.getId()) {
+                    matched = true;
+                }
+            }
+            if (!matched) {
+                sortedRooms.add(allRoom);
+            }
+        }
+
         sortedRooms.sort(Comparator.comparingInt(RoomInterface::getNumberOfBeds));
 
         idealRoomsCandidate =  findIdealCandidate(inRoomsNoBeds, sortedRooms);
@@ -155,15 +171,11 @@ public class Hotel implements HotelInterface {
             throw new IllegalArgumentException("Something is really fucked up, negative missing beds.");
         }
 
+        System.out.println("Ideal candidates " + idealRoomsCandidate);
         isIdealCandidateFound = 0 == missingBeds;
-
-        System.out.println(listFoundNoBeds + " " + missingBeds);
-        //sortedRooms.stream().filter(x-> )
-        //System.out.println(sortedRooms);
 
         List<RoomInterface> roomsWithoutIdealRoomsCandidate = new ArrayList<>(sortedRooms);
 
-        System.out.println("Ideal candidate" + " " +  idealRoomsCandidate + " " + isIdealCandidateFound);
 
         //Oh jesus, why Java sucks, or only am I  java dumb? Trying to remove from List of rooms  objects in different list. (based on id)
         for (RoomInterface idealCandidateRoom: idealRoomsCandidate) {
@@ -198,6 +210,8 @@ public class Hotel implements HotelInterface {
             ReservationInfo idealReservationInfo =  new ReservationInfo((MyPeriod) period, idealRoomsCandidate, (float) usedRoomsBedsCapacity/totalBedsCapacity);
             returnedReservationInfo.add(idealReservationInfo);
 
+            ReservationInfo.incGid();
+
             return returnedReservationInfo;
 
         } else if (!isIdealCandidateFound && listOfRoomsCandidates.isEmpty()) {
@@ -219,22 +233,20 @@ public class Hotel implements HotelInterface {
                 }
 
                 semiIdealAndCandidatesList.addAll(listOfRoomsCandidates.get(i));
-                System.out.println(semiIdealAndCandidatesList);
 
-                returnedReservationInfo.add(new ReservationInfo((MyPeriod)period, semiIdealAndCandidatesList, (float)usedRoomsBedsCapacity/totalBedsCapacity));
+                returnedReservationInfo.add(new ReservationInfo((MyPeriod)period, new ArrayList<>(semiIdealAndCandidatesList), (float)usedRoomsBedsCapacity/totalBedsCapacity));
 
                 semiIdealAndCandidatesList.clear();
+
             }
+            ReservationInfo.incGid();
 
         }
-
         return returnedReservationInfo;
-
 
     }
 
     private List<RoomInterface> findIdealCandidate(List<Integer> inRoomsNoBeds, List<RoomInterface> sortedRooms) {
-
 
 
         List<Integer> needsReserve = new ArrayList<>(inRoomsNoBeds);
@@ -269,7 +281,6 @@ public class Hotel implements HotelInterface {
 
             }
         }
-
 
         return idealRoomsCandidate;
     }
@@ -309,10 +320,8 @@ public class Hotel implements HotelInterface {
     }
 
 
-
     private List<RoomInterface> findUsedRooms(MyPeriodInterface period) {
 
-        //Find the usedRooms
         List<RoomInterface> usedRooms = new ArrayList<>();
         List<ReservationInterface> reserved =  reservations.reservationsInMyPeriod(period);
 
@@ -330,13 +339,39 @@ public class Hotel implements HotelInterface {
     @Override
     public Boolean makeReservation(ClientInterface client, ReservationInfo request) {
 
-        /*
-       // Reservation newReservation =  new Reservation(lastReservationId, client, request);
-        Reservations.add(newReservation);
+        if (!request.getReservationState().equals(ReservationInfo.ReservationState.New)) {
+            return false;
+        }
 
-       // System.out.println(client.getId() + request.getId());
-        */
+        //if in (last) of reservations client ordered and pay for reservation, he can pay less.
+        int sizeOfReservationList = reservations.getAllReservations().size();
+        int startSublistIndexReservation = sizeOfReservationList*(int) CLIENT_DISCOUNT_LAST_RESERVATION_RATIO;
 
+        List<ReservationInterface> discountReservations = reservations.getAllReservations().subList(startSublistIndexReservation, sizeOfReservationList);
+        long clientDiscountCount = discountReservations.stream().filter(x->x.getClient().equals(client)).filter(x->x.getOrderState().equals(OrderState.Accepted)).count();
+
+        float clientDiscountRatio = clientDiscountCount / (!discountReservations.isEmpty()? discountReservations.size(): Integer.MAX_VALUE);
+
+        //Maximum is 0.69
+        double percentageDiscount = Math.log(clientDiscountRatio + 1);
+
+        float price;
+
+        if (clientDiscountRatio > 0.1) {
+            price = (float)request.getRoomsInfo().stream().mapToDouble(x -> x.getBasePrice()).sum() * (float) percentageDiscount;
+
+        } else {
+
+            price = (float) request.getRoomsInfo().stream().mapToDouble(x -> x.getBasePrice()).sum();
+        }
+
+        price =  price * (-DAYS.between(request.getPeriod().getStopDate(), request.getPeriod().getStartDate()));
+        ReservationInterface reservation = new Reservation(lastReservationId++, client, request, price, (float) percentageDiscount);
+
+
+      //  List<ReservationInterface> reserv = reservations.reservationsInMyPeriod(request.getPeriod());
+
+        reservations.addReservation((Reservation) reservation);
 
         return true;
     }

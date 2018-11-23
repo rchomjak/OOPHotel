@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String args[]){
 
-        HotelInterface h1 =  Hotel.getInstance();
+        Hotel h1 =  (Hotel) Hotel.getInstance();
 
         h1.addRoom(4, LuxuryCategory.Cheap);
         h1.addRoom(4, LuxuryCategory.Cheap);
@@ -66,9 +66,50 @@ public class Main {
 
         request.add(2);
 
-        request.add(4);
+        request.add(1);
+        request.add(1);
+        request.add(1);
+        request.add(1);
 
-        h1.findFreeRooms(timeRange, request);
+
+
+
+        ClientsInterface hotelClients = Clients.getInstance();
+
+        Client testClient = new Client("a@a.sk", false);
+
+        hotelClients.addClient(testClient);
+
+
+        List<ReservationInfo> reservationsInfo = h1.findFreeRooms(timeRange, request);
+
+       // System.out.println(reservationsInfo);
+
+        ReservationInfo res = reservationsInfo.get(0);
+
+        h1.makeReservation(testClient, res);
+
+        Reservations a = (Reservations) h1.getReservations();
+
+       // System.out.println(a.getAllReservations());
+
+
+
+
+        List<ReservationInfo> reservationsInfo2 = h1.findFreeRooms(timeRange, request);
+
+     //   System.out.println(reservationsInfo2);
+
+        ReservationInfo res2 = reservationsInfo2.get(0);
+        h1.makeReservation(testClient, res2);
+
+
+
+        Reservations b = (Reservations) h1.getReservations();
+
+        System.out.println(b.getAllReservations());
+
+
 
 
         //ReservationInfoInterface reservation = new ReservationInfo()
