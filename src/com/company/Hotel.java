@@ -245,7 +245,7 @@ public class Hotel implements HotelInterface {
             ReservationInfo idealReservationInfo =  new ReservationInfo((MyPeriod) period, idealRoomsCandidate, (float) usedRoomsBedsCapacity/totalBedsCapacity);
             returnedReservationInfo.add(idealReservationInfo);
 
-            ReservationInfo.incGid();
+            //ReservationInfo.incGid();
 
             return returnedReservationInfo;
 

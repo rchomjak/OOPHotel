@@ -196,6 +196,7 @@ public class Main {
 
 */
         h1.readRooms("rooms.csv");
+        h1.addRoom(4, LuxuryCategory.SuperLuxury);
 
         System.out.println(h1.rooms);
     }

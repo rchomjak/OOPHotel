@@ -14,10 +14,8 @@ public class Reservations implements ReservationsInterface {
 
         ReservationInterface reserv = findReservation(id);
         if (reserv != null && !reserv.getOrderState().equals(OrderState.Deleted)) {
-
             reserv.setOrderState(OrderState.Deleted);
         } else {
-
             throw new IllegalArgumentException("There is no reservation with id: " + id);
         }
     }
@@ -27,7 +25,6 @@ public class Reservations implements ReservationsInterface {
 
         for (ReservationInterface reservation: reservations) {
             if (reservation.getId() == in_reservation.getId()) {
-
                 throw new IllegalArgumentException("There is already exists client with same id: " + reservation.getId());
             }
         }
