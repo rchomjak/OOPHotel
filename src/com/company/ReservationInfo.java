@@ -66,4 +66,10 @@ public class ReservationInfo implements  ReservationInfoInterface {
         this.reservationState = a;
     }
 
+
+
+
+
+
+
 }
