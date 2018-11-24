@@ -28,7 +28,7 @@ public class Hotel implements HotelInterface {
 
     private final int MAXIMUM_ROOMS_RESERVATION_INFO = 3;
 
-    private final int ROOMS_ROTATION = MAXIMUM_ROOMS_RESERVATION_INFO;
+    private final int ROOMS_ROTATION = 42;
 
     private final double CLIENT_DISCOUNT_LAST_RESERVATION_RATIO = 0.30;
 
@@ -274,7 +274,6 @@ public class Hotel implements HotelInterface {
                 semiIdealAndCandidatesList.clear();
 
             }
-            ReservationInfo.incGid();
 
         }
         return returnedReservationInfo;
@@ -374,9 +373,6 @@ public class Hotel implements HotelInterface {
     @Override
     public Boolean makeReservation(ClientInterface client, ReservationInfo request) {
 
-        if (!request.getReservationState().equals(ReservationInfo.ReservationState.New)) {
-            return false;
-        }
 
         //if in (last) of reservations client ordered and pay for reservation, he can pay less.
         int sizeOfReservationList = reservations.getAllReservations().size();
@@ -423,18 +419,16 @@ public class Hotel implements HotelInterface {
 
             for (CSVRecord csvRecord : csvParser) {
 
-                RoomInterface addRoom = new Room(Integer.parseInt(csvRecord.get("id")),  Integer.parseInt(csvRecord.get("numberOfBeds")),  LuxuryCategory.valueOf( csvRecord.get("luxuryCategory")));
+                RoomInterface addRoom = new Room(Integer.parseInt(csvRecord.get("id")), Integer.parseInt(csvRecord.get("numberOfBeds")), LuxuryCategory.valueOf(csvRecord.get("luxuryCategory")));
 
                 addRoom.setDeleted(Boolean.parseBoolean(csvRecord.get("numberOfBeds")));
                 this.addRoomCSV(addRoom);
-
-
             }
+
         } catch (IOException e) {
-
             e.printStackTrace();
-        } finally {
 
+        } finally {
 
         }
 

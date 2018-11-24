@@ -1,38 +1,151 @@
 package com.company;
 
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ReservationsInfo implements ReservationsInfoInterface {
 
+    public List<List<ReservationInfo>> reservationsInfo = new ArrayList<>();
+    private Map<Integer, List<ReservationInfo>> categoryReservationMap = new HashMap<>();
 
-    private List<List<ReservationInfo>> reservationsInfo = new ArrayList<>();
+    private int gid = 0;
 
     ReservationsInfo() {
         return;
     }
 
-
     @Override
     public void delReservationInfoByGid(int gid) {
-        return;
+        categoryReservationMap.remove(gid);
     }
 
     @Override
     public void delReservationInfoById(int id) {
+
+        /*
+            for (List<ReservationInfo> lreservationsInfo: reservationsInfo) {
+                for ( ReservationInfo lreservationInfo: lreservationsInfo ) {
+                    if (lreservationInfo.getId() == id ) {
+                        return lreservationInfo;
+                    }
+                }
+            }
+            return;
+        */
+
         return;
     }
 
-
     @Override
-    public void addReservationInfo(List<ReservationInfo> reservInfo){
+    public void addReservationsInfo(List<ReservationInfo> reservInfo){
 
-        return;
+        reservationsInfo.add(reservInfo);
+        categoryReservationMap.put(gid++, reservInfo);
     }
 
     @Override
     public List<ReservationInfo> findReservationInfoByGid(int gid) {
+        return this.categoryReservationMap.get(gid);
+    }
+
+    public ReservationInfo findReservationInfoById(int lid) {
+
+        for (List<ReservationInfo> lreservationsInfo: reservationsInfo) {
+            for ( ReservationInfo lreservationInfo: lreservationsInfo ) {
+                if (lreservationInfo.getId() == lid ) {
+                    return lreservationInfo;
+                }
+            }
+        }
+
         return null;
     }
+
+
+    public Boolean writer(String path) throws IOException {
+
+        try (
+                BufferedWriter writer = Files.newBufferedWriter(Paths.get(path));
+
+                CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+                        .withHeader("id" , "dateStart", "dateEnd", "orderedRooms"));
+        ) {
+
+
+
+            for (List<ReservationInfo> lReservInfo: reservationsInfo) {
+
+                for (ReservationInfo reservInfo: lReservInfo) {
+
+                     String roomsId = "";
+
+                     for (RoomInterface roomIn:  reservInfo.getRoomsInfo()) {
+                         roomsId += ""+ roomIn.getId() + ";" ;
+                     }
+
+                    csvPrinter.printRecord(""+ (int)reservInfo.getId(), reservInfo.getPeriod().getStartDate().toString(), reservInfo.getPeriod().getStopDate().toString(), roomsId);
+                }
+            }
+
+            csvPrinter.flush();
+        }  catch (IOException e) {
+
+            e.printStackTrace();
+
+        }
+
+
+        return true;
+    }
+
+    /*
+    public void reader(String path)   throws IOException {
+
+        try {
+            BufferedReader reader = Files.newBufferedReader(Paths.get(path));
+
+            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader().withIgnoreHeaderCase().withTrim());
+
+            for (CSVRecord csvRecord : csvParser) {
+
+
+
+                Client addClient = new Client(csvRecord.get("id"), Boolean.parseBoolean(csvRecord.get("isSuperUser")));
+
+                addClient.setDeleted(Boolean.parseBoolean(csvRecord.get("isDeleted")));
+                addClient.setNoFinishedReservations(Integer.parseInt(csvRecord.get("noFinishedReservations")));
+
+                this.addClient(addClient);
+
+            }
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        } finally {
+
+
+        }
+
+
+    }
+    */
+
+
+
+
+
+
 }
 
