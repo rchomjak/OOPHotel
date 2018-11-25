@@ -178,7 +178,7 @@ public class Main {
         */
 
         Hotel h1 =  (Hotel) Hotel.getInstance();
-/*
+
         h1.addRoom(4, LuxuryCategory.Cheap);
         h1.addRoom(4, LuxuryCategory.Cheap);
         h1.addRoom(4, LuxuryCategory.Cheap);
@@ -194,11 +194,66 @@ public class Main {
         h1.addRoom(4, LuxuryCategory.Cheap);
         h1.addRoom(4, LuxuryCategory.Cheap);
 
+
+
+
+        LocalDate dateStart = LocalDate.parse("2018-01-01");
+        LocalDate dateStop = LocalDate.parse("2018-02-02");
+
+        MyPeriodInterface timeRange = new MyPeriod(dateStart, dateStop);
+        //ClientInterface client = new Client("Jozko@jozko", false);
+
+        List<Integer> request = new ArrayList<>();
+
+        request.add(1);
+        request.add(1);
+        request.add(1);
+
+        request.add(1);
+        request.add(1);
+        request.add(1);
+
+        request.add(2);
+
+        request.add(1);
+
+        request.add(2);
+
+        request.add(1);
+        request.add(1);
+        request.add(1);
+        request.add(1);
+
+
+
+        ReservationsInfo reservationsInfo =  new ReservationsInfo();
+/*
+        List<ReservationInfo> reservationsInfo2 = h1.findFreeRooms(timeRange, request);
+
+        reservationsInfo.addReservationsInfo(reservationsInfo2);
+
+        System.out.println(reservationsInfo.reservationsInfo);
+
+        List<ReservationInfo> reservationsInfo3 = h1.findFreeRooms(timeRange, request);
+
+
+        reservationsInfo.addReservationsInfo(reservationsInfo3);
 */
-        h1.readRooms("rooms.csv");
+
+        try {
+            reservationsInfo.reader("reservationsInfo.csv", h1.rooms);
+        } catch (IOException e ) {
+            e.printStackTrace();
+        }
+
+
+
+
+       // h1.readRooms("rooms.csv");
         h1.addRoom(4, LuxuryCategory.SuperLuxury);
 
-        System.out.println(h1.rooms);
+        h1.writeRooms("rooms.csv");
+        System.out.println(reservationsInfo.reservationsInfo);
     }
 
 

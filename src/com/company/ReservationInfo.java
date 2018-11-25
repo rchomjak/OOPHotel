@@ -7,23 +7,15 @@ public class ReservationInfo implements  ReservationInfoInterface {
     private MyPeriodInterface period;
     private List<RoomInterface> orderedRooms;
 
-    private static int gid = 0;
     private static int id = 0;
+    private static int gid = 0;
 
-    private int lGid;
     private int lId;
+    private int lgId;
 
     private float capacityRatio;
-    private ReservationState reservationState = ReservationState.New;
+   // private ReservationState reservationState = ReservationState.New;
 
-
-    enum ReservationState {
-
-        New,
-        Canceled,
-        //Deleted simulates operation delete
-        Deleted,
-    }
 
 
     ReservationInfo(MyPeriod inMyPeriod, List<RoomInterface> orderedRooms, float capacityRatio) {
@@ -31,7 +23,7 @@ public class ReservationInfo implements  ReservationInfoInterface {
         this.orderedRooms = orderedRooms;
         this.capacityRatio = capacityRatio;
         this.lId = id++;
-        this.lGid = gid;
+        this.lgId = gid;
 
     }
 
@@ -44,9 +36,6 @@ public class ReservationInfo implements  ReservationInfoInterface {
         return orderedRooms;
     }
 
-    public static void incGid() {
-        gid++;
-    }
 
     @Override
     public String toString() {
@@ -54,12 +43,25 @@ public class ReservationInfo implements  ReservationInfoInterface {
         return " { \"Reservation_ID\": "  + this.lId + ", \"Date_start\": " +  "\"" + this.getPeriod().getStartDate().toString() + "\"" +  ", \"Date_end\": " + "\"" + this.getPeriod().getStopDate().toString() + "\"" + ", \"Rooms\": " + this.getRoomsInfo().toString() + "} " ;
     }
 
-    public float getId() {
-        return this.id;
+    public int getId() {
+        return this.lId;
     }
 
-    public ReservationState getReservationState() {
-        return this.reservationState;
+    public void setId (int id) {
+        this.lId = id;
+    }
+
+    public void setGid(int gid) { this.lgId = gid; }
+
+    public int getGid() {return this.lgId;}
+
+
+    public static void incGid() { gid++; }
+
+    public static void setgGid(int in_gid) { gid=in_gid; }
+
+/*
+    public ReservationState getReservationState() { return this.reservationState;
     }
 
     public void setReservationState(ReservationState a) {
@@ -67,9 +69,7 @@ public class ReservationInfo implements  ReservationInfoInterface {
     }
 
 
-
-
-
+*/
 
 
 }
