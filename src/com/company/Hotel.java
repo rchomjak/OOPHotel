@@ -9,14 +9,7 @@ import java.io.*;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.time.Period;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -38,7 +31,7 @@ public class Hotel implements HotelInterface {
     private static final HotelInterface hotel = new Hotel();
     private int totalBedsCapacity = 0;
 
-    private Reservations reservations = new Reservations();
+    public Reservations reservations = new Reservations();
     private int lastReservationId = 0;
 
 

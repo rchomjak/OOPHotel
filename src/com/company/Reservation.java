@@ -44,8 +44,8 @@ public class Reservation implements ReservationInterface {
     }
 
     @Override
-    public ReservationInfoInterface getReservationInfo() {
-        return reservationInfo;
+    public ReservationInfo getReservationInfo() {
+        return (ReservationInfo)this.reservationInfo;
     }
 
     @Override
@@ -78,5 +78,23 @@ public class Reservation implements ReservationInterface {
     @Override
     public String toString() {
         return "{ \"id\":" + this.id +  ", \"Client\":" + this.client + ", Price:" + this.price + ", Discount:" + this.discount + ", \"AdditionalRoomInformation\": " + this.getReservationInfo() + "}";
+    }
+
+
+    public float getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
+
+
+    public float getDiscount() {
+        return this.discount;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
     }
 }

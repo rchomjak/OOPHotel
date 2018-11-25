@@ -1,8 +1,5 @@
 package com.company;
 
-import java.io.Reader;
-import java.io.Writer;
-import java.time.Period;
 import java.util.List;
 
 public interface HotelInterface {
