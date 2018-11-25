@@ -10,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ public class ReservationsInfo implements ReservationsInfoInterface {
     @Override
     public void delReservationInfoByGid(int gid) {
         categoryReservationMap.remove(gid);
+        //TODO: needs remove from reservationsInfo too;
     }
 
     @Override
@@ -53,6 +55,12 @@ public class ReservationsInfo implements ReservationsInfoInterface {
 
         reservationsInfo.add(reservInfo);
         categoryReservationMap.put(gid++, reservInfo);
+    }
+
+    public void addReservationsInfo(List<ReservationInfo> reservInfo, int in_gid){
+
+        reservationsInfo.add(reservInfo);
+        categoryReservationMap.put(in_gid, reservInfo);
     }
 
     @Override
@@ -80,7 +88,7 @@ public class ReservationsInfo implements ReservationsInfoInterface {
                 BufferedWriter writer = Files.newBufferedWriter(Paths.get(path));
 
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                        .withHeader("id" , "dateStart", "dateEnd", "orderedRooms"));
+                        .withHeader("id", "gid", "dateStart", "dateEnd", "orderedRooms"));
         ) {
 
 
@@ -95,7 +103,7 @@ public class ReservationsInfo implements ReservationsInfoInterface {
                          roomsId += ""+ roomIn.getId() + ";" ;
                      }
 
-                    csvPrinter.printRecord(""+ (int)reservInfo.getId(), reservInfo.getPeriod().getStartDate().toString(), reservInfo.getPeriod().getStopDate().toString(), roomsId);
+                    csvPrinter.printRecord(reservInfo.getId(), reservInfo.getGid() , reservInfo.getPeriod().getStartDate().toString(), reservInfo.getPeriod().getStopDate().toString(), roomsId);
                 }
             }
 
@@ -106,12 +114,13 @@ public class ReservationsInfo implements ReservationsInfoInterface {
 
         }
 
-
         return true;
     }
 
-    /*
-    public void reader(String path)   throws IOException {
+
+    public void reader(String path, List<RoomInterface> rooms)   throws IOException {
+
+        Map<Integer, List<ReservationInfo>> readerGidReservationInfoMap = new HashMap<>();
 
         try {
             BufferedReader reader = Files.newBufferedReader(Paths.get(path));
@@ -121,15 +130,57 @@ public class ReservationsInfo implements ReservationsInfoInterface {
             for (CSVRecord csvRecord : csvParser) {
 
 
+                String[] roomsId = csvRecord.get("orderedRooms").split(";");
 
-                Client addClient = new Client(csvRecord.get("id"), Boolean.parseBoolean(csvRecord.get("isSuperUser")));
+                List<RoomInterface> orderedRooms = new ArrayList<>();
+                for (RoomInterface room : rooms) {
+                    for (String roomId : roomsId) {
+                        if (Integer.parseInt(roomId) == room.getId()) {
+                            orderedRooms.add(room);
+                        }
+                    }
+                }
 
-                addClient.setDeleted(Boolean.parseBoolean(csvRecord.get("isDeleted")));
-                addClient.setNoFinishedReservations(Integer.parseInt(csvRecord.get("noFinishedReservations")));
+                LocalDate dateStart = LocalDate.parse(csvRecord.get("dateStart"));
+                LocalDate dateStop = LocalDate.parse(csvRecord.get("dateStart"));
 
-                this.addClient(addClient);
+                MyPeriod reservationDate = new MyPeriod(dateStart, dateStop);
 
+                int gid = Integer.parseInt(csvRecord.get("gid"));
+
+                List<ReservationInfo> reservationInfoBasedOnGid = readerGidReservationInfoMap.get(gid);
+
+                if (reservationInfoBasedOnGid == null) {
+
+                    reservationInfoBasedOnGid = new ArrayList<>();
+                    ReservationInfo addReservation = new ReservationInfo(reservationDate, orderedRooms, 0);
+                    addReservation.setGid(gid);
+
+                    reservationInfoBasedOnGid.add(addReservation);
+
+                    readerGidReservationInfoMap.put(gid, reservationInfoBasedOnGid);
+
+
+                } else {
+
+                    ReservationInfo addReservation = new ReservationInfo(reservationDate, orderedRooms, 0);
+                    addReservation.setGid(gid);
+                    reservationInfoBasedOnGid.add(addReservation);
+                }
+
+                ReservationInfo.setgGid(gid);
+                this.gid = gid;
             }
+
+            for (Integer keys: readerGidReservationInfoMap.keySet()) {
+
+                   List<ReservationInfo> reservationInfoBasedOnGid = readerGidReservationInfoMap.get(keys);
+                   this.addReservationsInfo(reservationInfoBasedOnGid, keys);
+            }
+
+
+
+
         } catch (IOException e) {
 
             e.printStackTrace();
@@ -140,7 +191,7 @@ public class ReservationsInfo implements ReservationsInfoInterface {
 
 
     }
-    */
+
 
 
 

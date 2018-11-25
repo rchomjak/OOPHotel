@@ -227,25 +227,33 @@ public class Main {
 
 
         ReservationsInfo reservationsInfo =  new ReservationsInfo();
-
+/*
         List<ReservationInfo> reservationsInfo2 = h1.findFreeRooms(timeRange, request);
 
         reservationsInfo.addReservationsInfo(reservationsInfo2);
 
         System.out.println(reservationsInfo.reservationsInfo);
 
+        List<ReservationInfo> reservationsInfo3 = h1.findFreeRooms(timeRange, request);
+
+
+        reservationsInfo.addReservationsInfo(reservationsInfo3);
+*/
+
         try {
-            reservationsInfo.writer("reservationsInfo.csv");
+            reservationsInfo.reader("reservationsInfo.csv", h1.rooms);
         } catch (IOException e ) {
             e.printStackTrace();
         }
+
+
 
 
        // h1.readRooms("rooms.csv");
         h1.addRoom(4, LuxuryCategory.SuperLuxury);
 
         h1.writeRooms("rooms.csv");
-        System.out.println(h1.rooms);
+        System.out.println(reservationsInfo.reservationsInfo);
     }
 
 
