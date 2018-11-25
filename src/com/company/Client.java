@@ -1,6 +1,7 @@
 package com.company;
 
 
+import java.util.Objects;
 
 public class Client implements ClientInterface {
 
@@ -71,7 +72,7 @@ public class Client implements ClientInterface {
 
         Client b = (Client)a;
 
-        if ((this.getId() == b.getId())) {
+        if ((Objects.equals(this.getId(), b.getId()))) {
             return true;
         }
 

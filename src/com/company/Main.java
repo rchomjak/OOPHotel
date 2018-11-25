@@ -2,11 +2,8 @@ package com.company;
 
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Main {
@@ -159,13 +156,13 @@ public class Main {
 
         */
 
-     /*
+
         Clients clients = Clients.getInstance();
 
         Client client1 = new Client("A", false);
 
-        //clients.addClient(client1);
-
+        clients.addClient(client1);
+/*
         try {
             clients.reader("clients.csv");
         } catch (IOException a) {
@@ -227,7 +224,7 @@ public class Main {
 
 
         ReservationsInfo reservationsInfo =  new ReservationsInfo();
-/*
+
         List<ReservationInfo> reservationsInfo2 = h1.findFreeRooms(timeRange, request);
 
         reservationsInfo.addReservationsInfo(reservationsInfo2);
@@ -238,22 +235,24 @@ public class Main {
 
 
         reservationsInfo.addReservationsInfo(reservationsInfo3);
-*/
+
+
+     //   h1.makeReservation(client1, reservationsInfo3.get(0));
+      //  h1.makeReservation(client1, reservationsInfo3.get(1));
+
 
         try {
-            reservationsInfo.reader("reservationsInfo.csv", h1.rooms);
+            h1.reservations.reader("reservations.csv", clients, reservationsInfo);
         } catch (IOException e ) {
             e.printStackTrace();
         }
-
-
 
 
        // h1.readRooms("rooms.csv");
         h1.addRoom(4, LuxuryCategory.SuperLuxury);
 
         h1.writeRooms("rooms.csv");
-        System.out.println(reservationsInfo.reservationsInfo);
+        System.out.println(h1.reservations.getAllReservations());
     }
 
 
