@@ -88,7 +88,7 @@ public class ReservationsInfo implements ReservationsInfoInterface {
                 BufferedWriter writer = Files.newBufferedWriter(Paths.get(path));
 
                 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-                        .withHeader("id", "gid", "dateStart", "dateEnd", "orderedRooms"));
+                        .withHeader("id", "gid", "dateStart", "dateEnd", "orderedRooms", "capacityRatio"));
         ) {
 
 
@@ -103,7 +103,9 @@ public class ReservationsInfo implements ReservationsInfoInterface {
                          roomsId += ""+ roomIn.getId() + ";" ;
                      }
 
-                    csvPrinter.printRecord(reservInfo.getId(), reservInfo.getGid() , reservInfo.getPeriod().getStartDate().toString(), reservInfo.getPeriod().getStopDate().toString(), roomsId);
+                    csvPrinter.printRecord(reservInfo.getId(), reservInfo.getGid(),
+                                            reservInfo.getPeriod().getStartDate().toString(),
+                                            reservInfo.getPeriod().getStopDate().toString(), roomsId, reservInfo.getCapacityRatio());
                 }
             }
 
@@ -147,13 +149,14 @@ public class ReservationsInfo implements ReservationsInfoInterface {
                 MyPeriod reservationDate = new MyPeriod(dateStart, dateStop);
 
                 int gid = Integer.parseInt(csvRecord.get("gid"));
+                float capacityRatio = Float.parseFloat(csvRecord.get("capacityRatio"));
 
                 List<ReservationInfo> reservationInfoBasedOnGid = readerGidReservationInfoMap.get(gid);
 
                 if (reservationInfoBasedOnGid == null) {
 
                     reservationInfoBasedOnGid = new ArrayList<>();
-                    ReservationInfo addReservation = new ReservationInfo(reservationDate, orderedRooms, 0);
+                    ReservationInfo addReservation = new ReservationInfo(reservationDate, orderedRooms,  capacityRatio);
                     addReservation.setGid(gid);
 
                     reservationInfoBasedOnGid.add(addReservation);
@@ -163,13 +166,14 @@ public class ReservationsInfo implements ReservationsInfoInterface {
 
                 } else {
 
-                    ReservationInfo addReservation = new ReservationInfo(reservationDate, orderedRooms, 0);
+                    ReservationInfo addReservation = new ReservationInfo(reservationDate, orderedRooms, capacityRatio);
                     addReservation.setGid(gid);
                     reservationInfoBasedOnGid.add(addReservation);
                 }
 
-                ReservationInfo.setgGid(gid);
+                ReservationInfo.setgGid(gid + 1);
                 this.gid = gid;
+                this.gid++;
             }
 
             for (Integer keys: readerGidReservationInfoMap.keySet()) {
