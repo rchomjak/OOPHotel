@@ -60,6 +60,10 @@ public class ReservationInfo implements  ReservationInfoInterface {
 
     public static void setgGid(int in_gid) { gid=in_gid; }
 
+    public float getCapacityRatio() {
+        return this.capacityRatio;
+    }
+
 /*
     public ReservationState getReservationState() { return this.reservationState;
     }
